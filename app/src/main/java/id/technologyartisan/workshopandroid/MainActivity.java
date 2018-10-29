@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.technologyartisan.workshopandroid.api.ApiClient;
 import id.technologyartisan.workshopandroid.model.Contact;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Contact");
+
+        ApiClient apiClient=new ApiClient();
+        String nama=ApiClient.nama;
+        String allamat=apiClient.alamat;
 
         fabAddContact=findViewById(R.id.fab_add_contact);
         fabAddContact.setOnClickListener(new View.OnClickListener() {
