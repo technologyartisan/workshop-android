@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,6 +36,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Contact contact=contacts.get(i);
         viewHolder.tvContactName.setText(contact.getName());
         viewHolder.tvContactNumber.setText(contact.getNumber());
+
+        Glide.with(context)
+                .load("http://api.futnet.id/images/contact/"+contact.getPicture())
+                .into(viewHolder.imgContact);
     }
 
     @Override

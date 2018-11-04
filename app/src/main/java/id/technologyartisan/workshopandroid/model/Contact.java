@@ -1,7 +1,11 @@
 package id.technologyartisan.workshopandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Contact {
     private String name;
+
+    @SerializedName("phone_number")
     private String number;
     private String picture;
 
