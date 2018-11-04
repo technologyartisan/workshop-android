@@ -13,6 +13,7 @@ import java.util.List;
 
 import id.technologyartisan.workshopandroid.api.ApiClient;
 import id.technologyartisan.workshopandroid.api.ApiService;
+import id.technologyartisan.workshopandroid.database.DbHelper;
 import id.technologyartisan.workshopandroid.model.Contact;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,17 +48,9 @@ public class MainActivity extends AppCompatActivity {
         rvContact=findViewById(R.id.rv_contact);
         rvContact.setLayoutManager(new LinearLayoutManager(this));
 
-//        setDataContact();
-//        setAdapter();
+//        callApi();
+        callContactLocal();
         callApi();
-    }
-
-    private void setDataContact(){
-        for (int i=0;i<3;i++){
-            contacts.add(new Contact("Urip Yogantara","082237137611","urip.jpg"));
-            contacts.add(new Contact("Wahyu Permadi","085123456789","wahyu.jpg"));
-            contacts.add(new Contact("Kris Sanjaya","08108765432","kris.jpg"));
-        }
     }
 
     private void callApi(){
@@ -66,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                         if (response.isSuccessful()){
+                            DbHelper dbHelper=new DbHelper(MainActivity.this);
+
+                            dbHelper.deleteContact();
+
                             contacts=response.body();
+
+//                            loop contact
+                            for (Contact contact:contacts) {
+                                dbHelper.insertContact(contact.getId(),contact.getName(),contact.getNumber(),contact.getPicture());
+                            }
                             setAdapter();
                         }else {
 
@@ -83,5 +85,12 @@ public class MainActivity extends AppCompatActivity {
     private void setAdapter(){
         adapter=new RecyclerViewAdapter(this,contacts);
         rvContact.setAdapter(adapter);
+    }
+
+    private void callContactLocal(){
+        DbHelper dbHelper=new DbHelper(this);
+        contacts=dbHelper.selectContact();
+
+        setAdapter();
     }
 }

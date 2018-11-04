@@ -1,5 +1,7 @@
 package id.technologyartisan.workshopandroid;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.Toast;
 
 import id.technologyartisan.workshopandroid.api.ApiClient;
 import id.technologyartisan.workshopandroid.api.ApiService;
+import id.technologyartisan.workshopandroid.database.DbHelper;
+import id.technologyartisan.workshopandroid.model.Contact;
 import id.technologyartisan.workshopandroid.model.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +39,8 @@ ApiClient apiClient;
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addContact();
+//                addContact();
+                addContactLocal();
             }
         });
     }
@@ -62,5 +67,22 @@ ApiClient apiClient;
                     }
                 });
 //        Toast.makeText(this, "Name : "+name+", number: "+number, Toast.LENGTH_SHORT).show();
+    }
+
+    private void addContactLocal(){
+        int id=1;
+        String name=etContactName.getText().toString();
+        String number=etContactNumber.getText().toString();
+        String picture="tes";
+
+        DbHelper dbHelper=new DbHelper(this);
+
+        long lastId=dbHelper.insertContact(id,name,number,picture);
+
+        if (lastId>0){
+            Toast.makeText(this, "Insert Berhasil", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Insert Gagal", Toast.LENGTH_SHORT).show();
+        }
     }
 }
